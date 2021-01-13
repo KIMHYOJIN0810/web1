@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Merge Sort</title>
+  </head>
+  <body>
+    <h1>Merge Sort(병합 정렬)</h1>
+    <h4><a href="https://m.blog.naver.com/PostView.nhn?blogId=ndb796&logNo=221227934987&proxyReferer=https:%2F%2Fwww.google.com%2F" target="_blank">참고사이트 : 안경잡이 개발자_2018 알고리즘_7.병합정렬(Merge Sort)</a></h4>
+    <img src="merge_sort1.png" width="70%">
+    <img src="merge_sort2.png" width="50%">
+    <ul>
+      <li>정확히 반으로 나누고 나중에 정렬한다.</li>
+      <li>대표적인 '분할 정복' 방법을 사용하는 알고리즘</li>
+      <li>퀵 정렬과 동일하게 <strong>O(N*logN)</strong>의 시간 복잡도를 가진다.</li>
+      <li>+ 일반적인 경우 퀵 정렬보다 느리지만 어떠한 상황에서도 정확히 O(N*logN)을 보장할 수 있다는 점에서 효율적인 알고리즘이다.</li>
+      <li>- 병합정렬은 기존데이터를 담을 추가적인 배열 공간이 필요하다는 점에서 메모리 활용이 비효율적이라는 문제가 있다.</li>
+    </ul>
+    <br>
+    <br>
+
+    <h2>소스코드</h2>
+    <table border="2" width = "90%"">
+      <tr>
+        <td>
+          <ol>
+            <li>&nbsp;#include&lt;stdio.h&gt;</li>
+            <li>&nbsp;int number = 8;</li>
+            <li>&nbsp;int sorted[8]; // 정렬 배열은 반드시 <strong>전역 변수로 선언</strong></li>
+            <li>&nbsp;void merge(int a[], int m, int middle, int n) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int i = m;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int j = middle + 1;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int k = m;</li>
+            <li>&nbsp;//작은 순서대로 배열에 삽입</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while (i <= middle && j <= n) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (a[i] <= a[j]) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sorted[k] = a[i];</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sorted[k] = a[j];</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j++;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k++;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;//i또는 j 중 하나가 먼저 끝났을 때 남은 데이터도 삽입</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (i > middle) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (int t = j; t <= n; t++) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sorted[k] = a[t];</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k++;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (int t = i; t <= middle; t++) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sorted[k] = a[t];</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k++;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;//정렬된 배열을 삽입</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (int t = m; t <= n; t++) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[t] = sorted[t];</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;void mergeSort(int a[], int m, int n) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (m < n) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int middle = (m + n) / 2;</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mergeSort(a, m, middle);</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mergeSort(a, middle + 1, n);</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge(a, m, middle, n);</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;}</li>
+            <li>&nbsp;int main(void) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int array[8] = { 7,6,5,8,3,5,9,1 };</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mergeSort(array, 0, number - 1);</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (int i = 0; i < number; i++) {</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("%d ", array[i]);</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</li>
+            <li>&nbsp;}</li>
+
+          </ol>
+        </td>
+      </tr>
+    </table>
+
+    <br>
+    <h2>결과</h2>
+    <img src="merge_sort3.PNG" width="80%">
+    <br>
+    <br>
+    <a href="main.html">←메인화면으로 돌아가기</a>
+    <br>
+    <br>
+  </body>
+</html>
